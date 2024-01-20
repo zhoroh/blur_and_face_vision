@@ -8,6 +8,39 @@ from pytube import YouTube
 
 import settings
 
+def download_youtube_video_to_tempfile(url):
+    """
+    Downloads a YouTube video to a temporary file.
+
+    Parameters:
+        url (str): The URL of the YouTube video.
+
+    Returns:
+        str: The path to the temporary file.
+    """
+
+    # Create a YouTube object
+    yt = YouTube(url)
+
+    # Select the highest resolution stream available
+    video_stream = yt.streams.filter(file_extension="mp4", res=720).first()
+    if not video_stream:
+        raise Exception("No suitable video stream found")
+
+    # Create a temporary file
+    temp_video_file = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False)
+
+    print("Downloading video...")
+    # Download the video directly to the temporary file
+    video_stream.stream_to_buffer(temp_video_file)
+
+    # Close the file (necessary before trying to access it on some systems)
+    temp_video_file.close()
+
+    print(f"Video downloaded to {temp_video_file.name}")
+    return temp_video_file.name
+
+
 def load_model(model_path):
     """
     Loads a YOLO object detection model from the specified model_path.
@@ -94,9 +127,8 @@ def play_youtube_video(conf, model):
         if st.sidebar.button('Detect Objects'):
             st.sidebar.success("Processing Youtube Video......")
             try:
-                yt = YouTube(source_youtube)
-                stream = yt.streams.filter(file_extension="mp4", res=720).first()
-                vid_cap_yt = cv2.VideoCapture(stream.url)
+                youtube_path = download_youtube_video_to_tempfile(source_youtube)
+                vid_cap_yt = cv2.VideoCapture(youtube_path)
                 file_out_yt = tempfile.NamedTemporaryFile(suffix='.mp4')
                 pathToWriteVideo = file_out_yt.name
                 fourcc = cv2.VideoWriter_fourcc(*'mpv4')
