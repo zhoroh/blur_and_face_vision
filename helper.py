@@ -143,8 +143,8 @@ def play_youtube_video(conf, model):
                 # video_bytes = st_video.read()
                 # st.video(video_bytes)
                 # st.write("Detected Video") 
-                 result_video = open(pathToWriteVideo, "rb")
-                 st.download_button(label="Download Results", data=result_video,file_name='results.mp4')
+                result_video = open(pathToWriteVideo, "rb")
+                st.download_button(label="Download Results", data=result_video,file_name='results.mp4')
             except Exception as e:
                 st.sidebar.error("Error loading video: " + str(e))
     else:
