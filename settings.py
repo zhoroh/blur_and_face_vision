@@ -17,9 +17,9 @@ ROOT = root_path.relative_to(Path.cwd())
 # Sources
 IMAGE = 'Image'
 VIDEO = 'Video'
-YOUTUBE = 'YouTube'
+UPLOAD_VIDEO = 'Upload Video'
 
-SOURCES_LIST = [IMAGE, VIDEO, YOUTUBE]
+SOURCES_LIST = [IMAGE, VIDEO, UPLOAD_VIDEO]
 
 # Images config
 IMAGES_DIR = ROOT / 'images'
