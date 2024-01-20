@@ -230,9 +230,12 @@ def play_stored_video(conf, model):
                 # st_video = open(pathToWriteVideo,'rb')
                 # video_bytes = st_video.read()
                 # st.video(video_bytes)
+                file_size = os.path.getsize(pathToWriteVideo)
+                print("vujvycbvhgjhf")
+                print(file_size)
                 st.video(pathToWriteVideo)
                 result_video = open(pathToWriteVideo, "rb")
-                st.download_button(label="Download video file", data=result_video,file_name='video_clip.mp4')
+                st.download_button(label="Download video file", data=result_video,file_name='video_clip.avi')
                 st.write("Detected Video") 
             except Exception as e:
                 st.sidebar.error("Error loading video: " + str(e))
