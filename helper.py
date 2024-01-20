@@ -64,13 +64,13 @@ def _display_detected_frames(video_writer,conf, model, image,classes, is_display
 
     # # Plot the detected objects on the video frame
     res_plotted = res[0].plot()
-    return res_plotted
-    # video_writer.write(res_plotted)
-    # st_frame.image(res_plotted,
-    #                caption='Detected Video',
-    #                channels="BGR",
-    #                use_column_width=True
-    #                )
+    # return res_plotted
+    video_writer.write(res_plotted)
+    st_frame.image(res_plotted,
+                   caption='Detected Video',
+                   channels="BGR",
+                   use_column_width=True
+                   )
 
 
 def play_youtube_video(conf, model):
@@ -196,7 +196,7 @@ def play_stored_video(conf, model):
                 # Read and process the video frame by frame
                 current_frame = 0
                 video_writer = cv2.VideoWriter(pathToWriteVideo, fourcc , fps=float(frames_per_second), frameSize=(width, height), isColor=True)
-                video_row=[]
+                # video_row=[]
                 while (vid_cap.isOpened()):
                     success, image = vid_cap.read()
                     percent_complete = (current_frame / total_frames) * 100
@@ -206,7 +206,7 @@ def play_stored_video(conf, model):
                     if current_frame < total_frames + 1: #  videos can be very very long
 
                         if success:
-                            new_frame = _display_detected_frames(video_writer,
+                            _display_detected_frames(video_writer,
                                                         conf,
                                                         model,
                                                         image,
@@ -214,7 +214,7 @@ def play_stored_video(conf, model):
                                                         is_display_tracker,
                                                         tracker
                                                         )
-                            video_row.append(new_frame)
+                            # video_row.append(new_frame)
                         
                         else:
                             video_writer.release()
@@ -225,11 +225,14 @@ def play_stored_video(conf, model):
                         video_writer.release()
                         vid_cap.release()
                         break
-                clip = mpy.ImageSequenceClip(video_row, fps=frames_per_second)
-                clip.write_videofile(pathToWriteVideo)
-                st_video = open(pathToWriteVideo,'rb')
-                video_bytes = st_video.read()
-                st.video(video_bytes)
+                # clip = mpy.ImageSequenceClip(video_row, fps=frames_per_second)
+                # clip.write_videofile(pathToWriteVideo)
+                # st_video = open(pathToWriteVideo,'rb')
+                # video_bytes = st_video.read()
+                # st.video(video_bytes)
+                st.video(pathToWriteVideo.name)
+                result_video = open(pathToWriteVideo.name, "rb")
+                st.download_button(label="Download video file", data=result_video,file_name='video_clip.mp4')
                 st.write("Detected Video") 
             except Exception as e:
                 st.sidebar.error("Error loading video: " + str(e))
