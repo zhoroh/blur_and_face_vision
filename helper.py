@@ -195,7 +195,7 @@ def play_stored_video(conf, model):
 
                 # Read and process the video frame by frame
                 current_frame = 0
-                # video_writer = cv2.VideoWriter(pathToWriteVideo, fourcc , fps=float(frames_per_second), frameSize=(width, height), isColor=True)
+                video_writer = cv2.VideoWriter(pathToWriteVideo, fourcc , fps=float(frames_per_second), frameSize=(width, height), isColor=True)
                 video_row=[]
                 while (vid_cap.isOpened()):
                     success, image = vid_cap.read()
