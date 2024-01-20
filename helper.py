@@ -96,21 +96,21 @@ def play_youtube_video(conf, model):
             try:
                 yt = YouTube(source_youtube)
                 stream = yt.streams.filter(file_extension="mp4", res=720).first()
-                vid_cap = cv2.VideoCapture(stream.url)
-                file_out = tempfile.NamedTemporaryFile(suffix='.mp4')
-                pathToWriteVideo = file_out.name
+                vid_cap_yt = cv2.VideoCapture(stream.url)
+                file_out_yt = tempfile.NamedTemporaryFile(suffix='.mp4')
+                pathToWriteVideo = file_out_yt.name
                 fourcc = cv2.VideoWriter_fourcc(*'mpv4')
-                width = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                height = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                frames_per_second = vid_cap.get(cv2.CAP_PROP_FPS)
-                total_frames = int(vid_cap.get(cv2.CAP_PROP_FRAME_COUNT))
+                width = int(vid_cap_yt.get(cv2.CAP_PROP_FRAME_WIDTH))
+                height = int(vid_cap_yt.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                frames_per_second = vid_cap_yt.get(cv2.CAP_PROP_FPS)
+                total_frames = int(vid_cap_yt.get(cv2.CAP_PROP_FRAME_COUNT))
                 if total_frames > 2500:
                     total_frames = 2500
                 checkpoints = [25, 50, 75, 100]
                 current_frame = 0
-                video_writer = cv2.VideoWriter(pathToWriteVideo, fourcc , fps=float(frames_per_second), frameSize=(width, height), isColor=True)
-                while (vid_cap.isOpened()):
-                    success, image = vid_cap.read()
+                video_writer_yt = cv2.VideoWriter(pathToWriteVideo, fourcc , fps=float(frames_per_second), frameSize=(width, height), isColor=True)
+                while (vid_cap_yt.isOpened()):
+                    success, image = vid_cap_yt.read()
                     percent_complete = (current_frame / total_frames) * 100
                     if checkpoints and percent_complete >= checkpoints[0]:
                         st.sidebar.success(f"Video Processing is {checkpoints.pop(0)}% completed.")
@@ -118,31 +118,31 @@ def play_youtube_video(conf, model):
                     if current_frame < total_frames + 1: # youtube videos can be very very long
 
                         if success:
-                            _display_detected_frames(video_writer,
-                                                        conf,
-                                                        model,
-                                                        image,
-                                                        classes_to_detect,
-                                                        is_display_tracker,
-                                                        tracker
+                            _display_detected_frames(video_writer_yt,
+                                                     conf,
+                                                     model,
+                                                     image,
+                                                     classes_to_detect,
+                                                     is_display_tracker,
+                                                     tracker
                                                         )
                         
                         else:
-                            video_writer.release()
-                            vid_cap.release()
+                            video_writer_yt.release()
+                            vid_cap_yt.release()
                             break
                     else:
                         ""
-                        video_writer.release()
-                        vid_cap.release()
+                        video_writer_yt.release()
+                        vid_cap_yt.release()
                         break
                 
                 # st_video = open('result_youtube.mp4','rb')
                 # video_bytes = st_video.read()
                 # st.video(video_bytes)
                 # st.write("Detected Video") 
-                result_video = open(pathToWriteVideo, "rb")
-                st.download_button(label="Download Results", data=result_video,file_name='ytube results.mp4')
+                result_video_yt = open(pathToWriteVideo, "rb")
+                st.download_button(label="Download Youtube Results", data=result_video_yt,file_name='ytube_results.mp4')
             except Exception as e:
                 st.sidebar.error("Error loading video: " + str(e))
     else:
