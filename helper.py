@@ -219,7 +219,7 @@ def play_stored_video(conf, model):
                         video_writer.release()
                         vid_cap.release()
                         break
-                st_video = open(path+'/'+pathToWriteVideo,'rb')
+                st_video = open('./'+pathToWriteVideo,'rb')
                 video_bytes = st_video.read()
                 st.video(video_bytes)
                 st.write("Detected Video") 
