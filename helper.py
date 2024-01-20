@@ -8,9 +8,6 @@ from pytube import YouTube
 
 import settings
 
-file_out = tempfile.NamedTemporaryFile(delete=False,suffix='.mp4')
-
-
 def load_model(model_path):
     """
     Loads a YOLO object detection model from the specified model_path.
@@ -100,6 +97,7 @@ def play_youtube_video(conf, model):
                 yt = YouTube(source_youtube)
                 stream = yt.streams.filter(file_extension="mp4", res=720).first()
                 vid_cap = cv2.VideoCapture(stream.url)
+                file_out = tempfile.NamedTemporaryFile(suffix='.mp4')
                 pathToWriteVideo = file_out.name
                 fourcc = cv2.VideoWriter_fourcc(*'mpv4')
                 width = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
@@ -144,7 +142,7 @@ def play_youtube_video(conf, model):
                 # st.video(video_bytes)
                 # st.write("Detected Video") 
                 result_video = open(pathToWriteVideo, "rb")
-                st.download_button(label="Download Results", data=result_video,file_name='results.mp4')
+                st.download_button(label="Download Results", data=result_video,file_name='ytube results.mp4')
             except Exception as e:
                 st.sidebar.error("Error loading video: " + str(e))
     else:
@@ -184,6 +182,7 @@ def play_stored_video(conf, model):
             try:
                 vid_cap = cv2.VideoCapture(
                     str(settings.VIDEOS_DICT.get(source_vid)))
+                file_out = tempfile.NamedTemporaryFile(suffix='.mp4')
                 pathToWriteVideo = file_out.name
                 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
                 width = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
