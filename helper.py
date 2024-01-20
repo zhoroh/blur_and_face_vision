@@ -5,7 +5,6 @@ import tempfile
 import streamlit as st
 import cv2
 from pytube import YouTube
-import moviepy.editor as mpy
 
 import settings
 
@@ -101,7 +100,7 @@ def play_youtube_video(conf, model):
                 yt = YouTube(source_youtube)
                 stream = yt.streams.filter(file_extension="mp4", res=720).first()
                 vid_cap = cv2.VideoCapture(stream.url)
-                pathToWriteVideo='result_youtube.mp4'
+                pathToWriteVideo = file_out.name
                 fourcc = cv2.VideoWriter_fourcc(*'mpv4')
                 width = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
                 height = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -140,10 +139,12 @@ def play_youtube_video(conf, model):
                         vid_cap.release()
                         break
                 
-                st_video = open('result_youtube.mp4','rb')
-                video_bytes = st_video.read()
-                st.video(video_bytes)
-                st.write("Detected Video") 
+                # st_video = open('result_youtube.mp4','rb')
+                # video_bytes = st_video.read()
+                # st.video(video_bytes)
+                # st.write("Detected Video") 
+                 result_video = open(pathToWriteVideo, "rb")
+                 st.download_button(label="Download Results", data=result_video,file_name='results.mp4')
             except Exception as e:
                 st.sidebar.error("Error loading video: " + str(e))
     else:
@@ -230,13 +231,13 @@ def play_stored_video(conf, model):
                 # st_video = open(pathToWriteVideo,'rb')
                 # video_bytes = st_video.read()
                 # st.video(video_bytes)
-                file_size = os.path.getsize(pathToWriteVideo)
-                print("vujvycbvhgjhf")
-                print(file_size)
-                st.video(pathToWriteVideo)
+                # file_size = os.path.getsize(pathToWriteVideo)
+                # print("vujvycbvhgjhf")
+                # print(file_size)
+                # st.video(pathToWriteVideo)
                 result_video = open(pathToWriteVideo, "rb")
-                st.download_button(label="Download video file", data=result_video,file_name='video_clip.mp4')
-                st.write("Detected Video") 
+                st.download_button(label="Download Results", data=result_video,file_name='results.mp4')
+                # st.write("Detected Video") 
             except Exception as e:
                 st.sidebar.error("Error loading video: " + str(e))
 
