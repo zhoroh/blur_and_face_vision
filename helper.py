@@ -7,7 +7,7 @@ from pytube import YouTube
 
 import settings
 
-path = os.path.dirname(__file__)
+file_out = tempfile.NamedTemporaryFile(suffix='.mp4')
 
 
 def load_model(model_path):
@@ -179,7 +179,7 @@ def play_stored_video(conf, model):
             try:
                 vid_cap = cv2.VideoCapture(
                     str(settings.VIDEOS_DICT.get(source_vid)))
-                pathToWriteVideo = 'result.mp4'
+                pathToWriteVideo = file_out.name
                 fourcc = cv2.VideoWriter_fourcc(*'mpv4')
                 width = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
                 height = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
