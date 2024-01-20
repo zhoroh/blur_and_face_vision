@@ -8,7 +8,7 @@ from pytube import YouTube
 
 import settings
 
-file_out = tempfile.NamedTemporaryFile(suffix='.mp4')
+file_out = tempfile.NamedTemporaryFile(delete=False,suffix='.mp4')
 
 
 def load_model(model_path):
