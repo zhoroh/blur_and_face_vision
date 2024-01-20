@@ -9,7 +9,7 @@ import moviepy.editor as mpy
 
 import settings
 
-file_out = tempfile.NamedTemporaryFile(delete=False,suffix='.avi')
+file_out = tempfile.NamedTemporaryFile(delete=False,suffix='.mp4')
 
 
 def load_model(model_path):
@@ -184,7 +184,7 @@ def play_stored_video(conf, model):
                 vid_cap = cv2.VideoCapture(
                     str(settings.VIDEOS_DICT.get(source_vid)))
                 pathToWriteVideo = file_out.name
-                fourcc = cv2.VideoWriter_fourcc(*'avc1')
+                fourcc = cv2.VideoWriter_fourcc(*'mp4v')
                 width = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
                 height = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
                 frames_per_second = vid_cap.get(cv2.CAP_PROP_FPS)
@@ -235,7 +235,7 @@ def play_stored_video(conf, model):
                 print(file_size)
                 st.video(pathToWriteVideo)
                 result_video = open(pathToWriteVideo, "rb")
-                st.download_button(label="Download video file", data=result_video,file_name='video_clip.avi')
+                st.download_button(label="Download video file", data=result_video,file_name='video_clip.mp4')
                 st.write("Detected Video") 
             except Exception as e:
                 st.sidebar.error("Error loading video: " + str(e))
