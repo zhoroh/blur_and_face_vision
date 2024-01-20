@@ -104,7 +104,7 @@ def _display_detected_frames(video_writer,conf, model, image,classes, is_display
 
 def play_uploaded_video(conf, model):
     
-    video_data = st.file_uploader("Upload video", ['mp4','mov', 'avi'])
+    video_data = st.sidebar.file_uploader("Upload video", ['mp4','mov', 'avi'])
     if video_data:
         
         temp_file_1 = tempfile.NamedTemporaryFile(delete=False,suffix='.mp4')
