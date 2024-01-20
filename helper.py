@@ -66,11 +66,11 @@ def _display_detected_frames(video_writer,conf, model, image,classes, is_display
     res_plotted = res[0].plot()
     # return res_plotted
     video_writer.write(res_plotted)
-    st_frame.image(res_plotted,
-                   caption='Detected Video',
-                   channels="BGR",
-                   use_column_width=True
-                   )
+    # st_frame.image(res_plotted,
+    #                caption='Detected Video',
+    #                channels="BGR",
+    #                use_column_width=True
+    #                )
 
 
 def play_youtube_video(conf, model):
