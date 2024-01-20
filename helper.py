@@ -179,7 +179,7 @@ def play_stored_video(conf, model):
             try:
                 vid_cap = cv2.VideoCapture(
                     str(settings.VIDEOS_DICT.get(source_vid)))
-                pathToWriteVideo = 'output.mp4'
+                pathToWriteVideo = 'result.mp4'
                 fourcc = cv2.VideoWriter_fourcc(*'mpv4')
                 width = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
                 height = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
@@ -219,7 +219,7 @@ def play_stored_video(conf, model):
                         video_writer.release()
                         vid_cap.release()
                         break
-                st_video = open('./'+pathToWriteVideo,'rb')
+                st_video = open(pathToWriteVideo,'rb')
                 video_bytes = st_video.read()
                 st.video(video_bytes)
                 st.write("Detected Video") 
