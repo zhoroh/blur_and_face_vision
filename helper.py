@@ -230,8 +230,8 @@ def play_stored_video(conf, model):
                 # st_video = open(pathToWriteVideo,'rb')
                 # video_bytes = st_video.read()
                 # st.video(video_bytes)
-                st.video(pathToWriteVideo.name)
-                result_video = open(pathToWriteVideo.name, "rb")
+                st.video(pathToWriteVideo)
+                result_video = open(pathToWriteVideo, "rb")
                 st.download_button(label="Download video file", data=result_video,file_name='video_clip.mp4')
                 st.write("Detected Video") 
             except Exception as e:
