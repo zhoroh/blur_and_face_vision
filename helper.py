@@ -8,37 +8,37 @@ from pytube import YouTube
 
 import settings
 
-def download_youtube_video_to_tempfile(url):
-    """
-    Downloads a YouTube video to a temporary file.
+# def download_youtube_video_to_tempfile(url):
+#     """
+#     Downloads a YouTube video to a temporary file.
 
-    Parameters:
-        url (str): The URL of the YouTube video.
+#     Parameters:
+#         url (str): The URL of the YouTube video.
 
-    Returns:
-        str: The path to the temporary file.
-    """
+#     Returns:
+#         str: The path to the temporary file.
+#     """
 
-    # Create a YouTube object
-    yt = YouTube(url)
+#     # Create a YouTube object
+#     yt = YouTube(url)
 
-    # Select the highest resolution stream available
-    video_stream = yt.streams.filter(file_extension="mp4", res=720).first()
-    if not video_stream:
-        raise Exception("No suitable video stream found")
+#     # Select the highest resolution stream available
+#     video_stream = yt.streams.filter(file_extension="mp4", res=720).first()
+#     if not video_stream:
+#         raise Exception("No suitable video stream found")
 
-    # Create a temporary file
-    temp_video_file = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False)
+#     # Create a temporary file
+#     temp_video_file = tempfile.NamedTemporaryFile(suffix='.mp4', delete=False)
 
-    print("Downloading video...")
-    # Download the video directly to the temporary file
-    video_stream.stream_to_buffer(temp_video_file)
+#     print("Downloading video...")
+#     # Download the video directly to the temporary file
+#     video_stream.stream_to_buffer(temp_video_file)
 
-    # Close the file (necessary before trying to access it on some systems)
-    temp_video_file.close()
+#     # Close the file (necessary before trying to access it on some systems)
+#     temp_video_file.close()
 
-    print(f"Video downloaded to {temp_video_file.name}")
-    return temp_video_file.name
+#     print(f"Video downloaded to {temp_video_file.name}")
+#     return temp_video_file.name
 
 
 def load_model(model_path):
@@ -102,22 +102,11 @@ def _display_detected_frames(video_writer,conf, model, image,classes, is_display
     #                )
 
 
-def play_youtube_video(conf, model):
-    """
-    Plays a webcam stream. Detects Objects in real-time using the YOLOv8 object detection model.
-
-    Parameters:
-        conf: Confidence of YOLOv8 model.
-        model: An instance of the `YOLOv8` class containing the YOLOv8 model.
-
-    Returns:
-        None
-
-    Raises:
-        None
-    """
-    source_youtube = st.sidebar.text_input("YouTube Video url")
-
+def play_uploaded_video(conf, model):
+    
+    video_data = st.file_uploader("Upload video", ['mp4','mov', 'avi'])
+    temp_file_1 = tempfile.NamedTemporaryFile(delete=False,suffix='.mp4')
+    temp_file_1.write(video_data.getbuffer())
     is_display_tracker, tracker = display_tracker_options()
     selected_options = st.sidebar.multiselect("Choose The classes of objects     you interested in", list(settings.CLASS_NAMES.keys()))
     if selected_options:
@@ -127,8 +116,7 @@ def play_youtube_video(conf, model):
         if st.sidebar.button('Detect Objects'):
             st.sidebar.success("Processing Youtube Video......")
             try:
-                youtube_path = download_youtube_video_to_tempfile(source_youtube)
-                vid_cap_yt = cv2.VideoCapture(youtube_path)
+                vid_cap_yt = cv2.VideoCapture(temp_file_1.name)
                 file_out_yt = tempfile.NamedTemporaryFile(suffix='.mp4')
                 pathToWriteVideo = file_out_yt.name
                 fourcc = cv2.VideoWriter_fourcc(*'mpv4')
